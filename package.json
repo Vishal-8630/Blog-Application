@@ -1,0 +1,27 @@
+{
+  "name": "blog-application",
+  "version": "1.0.0",
+  "description": "Blog Application",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "server": "nodemon backend/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vishal-8630/Blog-Application.git"
+  },
+  "author": "Vishal Chaudhary",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Vishal-8630/Blog-Application/issues"
+  },
+  "homepage": "https://github.com/Vishal-8630/Blog-Application#readme",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}

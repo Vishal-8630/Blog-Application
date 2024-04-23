@@ -43,12 +43,34 @@ export const registerUser = asyncHanlder(async (req, res) => {
 // @url         Route: /api/auth/login
 // @access      Public
 export const loginUser = asyncHanlder(async (req, res) => {
-    res.json({ message: "Login" });
+    const { email, password } = req.body;
+
+    if(!email || !password) {
+        res.status(401);
+        throw new Error("Invalid credentials");
+    }
+
+    const user = await User.findOne({ email });
+    if(user && (await user.comparePassword(password))) {
+        generateToken(res, user._id);
+        res.status(200).json({
+            _id: user._id,
+            name: user.name,
+            email: user.email
+        });
+    } else {
+        res.status(401);
+        throw new Error("Invalid email or password");
+    }
 });
 
 // @desc        logout the user with
 // @url         Route: /api/auth/logout
 // @access      Public
 export const logoutUser = asyncHanlder(async (req, res) => {
-    res.json({ message: "Logout" });
+    res.cookie('jwt', '', {
+        httpOnly: true,
+        expires: new Date(0)
+    });
+    res.status(200).json({ message: "Logged out successfully" });
 });

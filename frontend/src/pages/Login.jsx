@@ -1,15 +1,39 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FormContainer from "../components/FormContainer";
 import { Button, Col, Form, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+
+import { useLoginMutation } from "../slices/authApiSlice";
+import { setCredentials } from "../slices/authSlice";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleFormSubmit = (e) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { userInfo } = useSelector(state => state.auth);
+  const [login, { isLoading }] = useLoginMutation();
+
+  useEffect(() => {
+    if(userInfo) {
+      navigate("/");
+    }
+  }, [userInfo, navigate]);
+
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log(email, password);
+    try {
+      const res = await login({ email, password }).unwrap();
+      dispatch(setCredentials({ ...res }));
+      toast.success("Login successfully");
+      navigate("/");
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
+    }
   };
 
   return (
@@ -38,7 +62,7 @@ const Login = () => {
         <Row>
           <Col className="text-right">
             <Button variant="primary" className="w-100 mt-3 bold" type="submit">
-              Login
+            { isLoading ? "Processing..." : "Login" }
             </Button>
           </Col>
         </Row>

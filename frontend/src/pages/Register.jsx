@@ -1,7 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FormContainer from "../components/FormContainer";
 import { Button, Col, Form, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+
+import { useRegisterMutation } from '../slices/authApiSlice';
+import { setCredentials } from "../slices/authSlice";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -9,9 +14,32 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleFormSubmit = (e) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { userInfo } = useSelector(state => state.auth);
+  const [register, { isLoading }] = useRegisterMutation();
+
+  useEffect(() => {
+    if(userInfo) {
+      navigate("/");
+    }
+  }, [userInfo, navigate]);
+
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log(email, password);
+    if(password !== confirmPassword) {
+      toast.error("Password mismatch");
+    } else {
+      try {
+        const res = await register({ name, email, password }).unwrap();
+        dispatch(setCredentials({ ...res }));
+        toast.success("Register successfully");
+        navigate("/");
+      } catch (err) {
+        toast.error(err?.data?.message || err.error);
+      }
+    }
   }
 
   return (
@@ -58,7 +86,7 @@ const Register = () => {
         <Row>
           <Col className="text-right">
             <Button variant="primary" className="w-100 mt-3 bold" type="submit">
-              Register
+              { isLoading ? "Processing..." : "Register" }
             </Button>
           </Col>
         </Row>

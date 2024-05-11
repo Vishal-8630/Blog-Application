@@ -10,6 +10,7 @@ connectDB();
 // Importing routes
 import { errorHandler, notFound } from './middlewares/errorHandler.js';
 import userRouter from './routes/userRoutes.js';
+import blogRouter from './routes/blogRoutes.js';
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -23,6 +24,7 @@ app.use(cookieParser());
 
 // Routes
 app.use("/api/auth", userRouter);
+app.use('/api/blog', blogRouter);
 
 // Calling error handler middlwares
 app.use(notFound);

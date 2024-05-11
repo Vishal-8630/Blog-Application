@@ -1,8 +1,18 @@
 import express from 'express';
-import { newBlog } from '../controllers/blogControllers.js';
+import { deleteBlog, getBlog, newBlog, updateBlog } from '../controllers/blogControllers.js';
 
 const router = express.Router();
 
-router.post('/new', newBlog);
+// Router to create new blog
+router.post('/', newBlog);
+
+// Router to get blog using
+router.get('/', getBlog);
+
+// Router to update blog using
+router.put('/', updateBlog);
+
+// Router to delete blog
+router.delete('/', deleteBlog);
 
 export default router;

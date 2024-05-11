@@ -35,6 +35,9 @@ const NavbarComponent = () => {
         <Nav className="ms-auto">
           {userInfo ? (
             <>
+              <LinkContainer to='/blogs'>
+                <Nav.Link>Blogs</Nav.Link>
+              </LinkContainer>
               <NavDropdown title={userInfo.name} id='username'>
                 <LinkContainer to='/profile'>
                   <NavDropdown.Item>profile</NavDropdown.Item>

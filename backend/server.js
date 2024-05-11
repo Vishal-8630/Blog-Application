@@ -24,7 +24,7 @@ app.use(cookieParser());
 
 // Routes
 app.use("/api/auth", userRouter);
-app.use('/api/blog', blogRouter);
+app.use('/api/blogs', blogRouter);
 
 // Calling error handler middlwares
 app.use(notFound);

@@ -37,11 +37,20 @@ export const newBlog = asyncHanlder(async (req, res) => {
     res.json({ newBlog });
 });
 
+
+// @desc        get blog using blogId
+// @url         Route: /api/blog/?blogId=
+// @access      Public
+export const allBlogs = asyncHanlder(async (req, res) => {
+    const blogs = await Blog.find();
+    return res.json({ blogs });
+});
+
 // @desc        get blog using blogId
 // @url         Route: /api/blog/?blogId=
 // @access      Public
 export const getBlog = asyncHanlder(async (req, res) => {
-    const blogId = req.query.blogId;
+    const blogId = req.params.blogId;
 
     // Validation for blogId
     if(!mongoose.Types.ObjectId.isValid(blogId)) {

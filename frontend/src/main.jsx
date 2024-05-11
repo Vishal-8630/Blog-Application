@@ -10,10 +10,13 @@ import {
 import { Provider } from "react-redux";
 
 import App from "./App";
+import store from "./store";
+import './main.css';
+
 import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-import store from "./store";
+import Blogs from "./pages/Blogs";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -21,6 +24,7 @@ const router = createBrowserRouter(
       <Route index path="/" element={<Home />} />
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/blogs" element={<Blogs />} />
     </Route>
   )
 );
